@@ -388,8 +388,8 @@
 
     .tool-body {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-      gap: 20px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
       padding: 26px;
       position: relative;
       z-index: 1;
@@ -654,6 +654,7 @@
 
     .side-panel {
       display: grid;
+      grid-template-columns: minmax(240px, 0.42fr) minmax(320px, 0.58fr);
       align-content: start;
       gap: 14px;
     }
@@ -747,6 +748,7 @@
 
     .swatch-tray {
       display: grid;
+      grid-column: 1 / -1;
       gap: 10px;
     }
 
@@ -773,6 +775,7 @@
       background: rgba(20, 27, 41, 0.72);
       padding: 14px;
       color: var(--text-muted);
+      flex: 1 1 100%;
       font-size: 0.9rem;
       line-height: 1.45;
     }
@@ -785,7 +788,7 @@
       border-radius: 18px;
       background: var(--bg-surface);
       padding: 10px;
-      flex: 1 1 180px;
+      flex: 1 1 210px;
       min-width: 170px;
       max-width: 260px;
     }
