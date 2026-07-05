@@ -1415,7 +1415,7 @@
                   </span>
                   <div>
                     <div class="drop-title">Pick any color from your screen</div>
-                    <div class="drop-help">Use the system eyedropper to sample a pixel from this page, another browser tab, or your desktop. Click again to pick more colors.</div>
+                    <div class="drop-help">Use the system eyedropper to sample a pixel from this page, another browser tab, or your desktop. Browsers require one click or Enter press per screen pick.</div>
                   </div>
                   <button id="screenPickButton" class="button button-primary" type="button">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2049,8 +2049,8 @@
           var color = colorFromHex(result.sRGBHex);
           if (commitPick(color, "screen pick")) {
             updateLiveReadout(color, "screen pick", "");
-            setStatus("Picked " + color.hex + " from the screen. Press Pick another screen color to continue.", "success");
-            screenPickButtonText.textContent = "Pick another screen color";
+            setStatus("Picked " + color.hex + " from the screen. Press Enter or click Pick next screen color to continue.", "success");
+            screenPickButtonText.textContent = "Pick next screen color";
           } else {
             screenPickButtonText.textContent = "Start screen picker";
           }
@@ -2060,6 +2060,7 @@
         } finally {
           state.screenPicking = false;
           screenPickButton.disabled = false;
+          screenPickButton.focus({ preventScroll: true });
         }
       }
 
@@ -2177,7 +2178,7 @@
         screenModeButton.setAttribute("aria-selected", String(!isImage));
         imagePickerPanel.classList.toggle("is-hidden", !isImage);
         screenPickerPanel.classList.toggle("is-hidden", isImage);
-        setStatus(isImage ? "Image mode active. Upload or paste an image to pick pixels." : "Screen mode active. Start the screen picker to sample outside the page.");
+        setStatus(isImage ? "Image mode active. Upload or paste an image to pick pixels." : "Screen mode active. Pick one color at a time; press Enter again after each pick.");
       }
 
       function updateLiveReadout(color, x, y) {
