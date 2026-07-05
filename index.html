@@ -1349,7 +1349,7 @@
   <main>
     <section id="tool" class="hero site-shell" aria-label="pixel2color image color picker tool">
       <div class="hero-copy">
-        <h1>Image Color Picker &mdash; Extract HEX, RGB &amp; HSL Codes from Any Photo</h1>
+        <h1>PICK COLOR FROM IMAGE &mdash; Extract HEX, RGB &amp; HSL Codes from Any Photo</h1>
         <p class="subhead">Upload, drag, or paste an image and click any pixel to copy precise color codes for web design, UI work, and creative projects.</p>
       </div>
       <div class="hero-frame">
@@ -1719,6 +1719,7 @@
       var MAX_SOURCE_DIMENSION = 4096;
       var STORAGE_PREFIX = "pixel2color-static-mvp";
       var ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/webp"];
+      var DEFAULT_SAMPLE_IMAGE = "public/default-poster.png";
       // Paste a Stripe-hosted Payment Link here to enable live Unlimited Pick checkout.
       var STRIPE_PAYMENT_LINK = "";
       var CHECKOUT_SUCCESS_URL = "https://pixel2color.vercel.app/?checkout=success";
@@ -1791,6 +1792,7 @@
       setupCheckoutLink();
       updateUsageUi();
       updateLiveReadout(defaultColor, 0, 0);
+      loadDefaultSampleImage();
 
       /* ===== EVENT WIRING ===== */
       imageModeButton.addEventListener("click", function () {
@@ -1919,6 +1921,23 @@
       });
 
       /* ===== IMAGE MODULE ===== */
+      function loadDefaultSampleImage() {
+        var image = new Image();
+        image.onload = function () {
+          drawImageToCanvases(image);
+          canvasStage.classList.add("is-visible");
+          state.imageLoaded = true;
+          state.currentSourceX = Math.floor(state.sourceWidth / 2);
+          state.currentSourceY = Math.floor(state.sourceHeight / 2);
+          updatePointerState(state.currentSourceX, state.currentSourceY);
+          setStatus("Default 7-color football poster loaded. Pick a color or upload your own image.", "success");
+        };
+        image.onerror = function () {
+          setStatus("Upload, drag, or paste an image to start picking colors.");
+        };
+        image.src = DEFAULT_SAMPLE_IMAGE;
+      }
+
       function handleFile(file) {
         if (!file) return;
         if (ACCEPTED_TYPES.indexOf(file.type) === -1) {
