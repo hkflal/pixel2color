@@ -281,6 +281,37 @@
       color: var(--text-primary);
     }
 
+    .nav-actions,
+    .auth-actions,
+    .account-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .auth-button {
+      min-height: 38px;
+      padding: 9px 12px;
+      font-size: 0.88rem;
+    }
+
+    .account-chip {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 5px 6px 5px 12px;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .auth-logout {
+      min-height: 30px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 0.78rem;
+    }
+
     .icon {
       width: 18px;
       height: 18px;
@@ -1097,6 +1128,107 @@
       display: block;
     }
 
+    .auth-modal {
+      display: grid;
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      place-items: center;
+      background: rgba(4, 6, 10, 0.72);
+      padding: 18px;
+      backdrop-filter: blur(18px);
+    }
+
+    .auth-panel {
+      width: min(430px, 100%);
+      border: 1px solid rgba(125, 211, 252, 0.22);
+      border-radius: 20px;
+      background: #111318;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.52), 0 0 30px rgba(125, 211, 252, 0.12);
+      padding: 22px;
+    }
+
+    .auth-panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .auth-panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+    }
+
+    .auth-panel p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .auth-close {
+      min-height: 34px;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 0.82rem;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .auth-field {
+      display: grid;
+      gap: 7px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .auth-field input {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 12px 13px;
+      color: var(--text-primary);
+      font: inherit;
+      outline: none;
+    }
+
+    .auth-field input:focus-visible {
+      border-color: rgba(125, 211, 252, 0.64);
+      box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.15);
+    }
+
+    .auth-message {
+      min-height: 22px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .auth-message.is-error {
+      color: #FF7A7A;
+    }
+
+    .auth-message.is-success {
+      color: var(--accent-mint);
+    }
+
+    .auth-switch {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .auth-demo-note {
+      margin-top: 14px !important;
+      font-size: 0.82rem;
+    }
+
     .faq-list {
       display: grid;
       gap: 12px;
@@ -1256,11 +1388,34 @@
       }
 
       .nav-inner {
+        flex-wrap: wrap;
         min-height: 58px;
+        padding: 8px 0;
+      }
+
+      .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 7px;
       }
 
       .nav-links {
         display: none;
+      }
+
+      .auth-button {
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+
+      .account-chip {
+        max-width: 144px;
+      }
+
+      #accountName {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .hero {
@@ -1338,12 +1493,22 @@
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </nav>
-      <button class="button button-primary" type="button" data-go-pro>
-        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 3l2.7 5.47 6.03.88-4.36 4.25 1.03 6-5.4-2.84-5.4 2.84 1.03-6-4.36-4.25 6.03-.88L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-        </svg>
-        Unlimited Pick
-      </button>
+      <div class="nav-actions">
+        <div id="authActions" class="auth-actions">
+          <button class="button button-secondary auth-button" type="button" data-auth-open="login">Login</button>
+          <button class="button button-secondary auth-button" type="button" data-auth-open="register">Register</button>
+        </div>
+        <div id="accountChip" class="account-chip is-hidden" aria-live="polite">
+          <span id="accountName">Account</span>
+          <button id="logoutButton" class="button button-ghost auth-logout" type="button">Logout</button>
+        </div>
+        <button class="button button-primary" type="button" data-go-pro>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3l2.7 5.47 6.03.88-4.36 4.25 1.03 6-5.4-2.84-5.4 2.84 1.03-6-4.36-4.25 6.03-.88L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+          Unlimited Pick
+        </button>
+      </div>
     </div>
   </header>
 
@@ -1631,8 +1796,8 @@
             <button class="button button-primary" type="button" data-go-pro>Unlimited Pick</button>
             <div id="checkoutNote" class="checkout-note" aria-live="polite">
               <strong id="checkoutTitle">PRO Plan is coming soon</strong>
-              <span id="checkoutMessage">Unlimited picks and checkout will be available soon.</span>
-              <a id="checkoutLink" class="button button-secondary checkout-link is-hidden" href="#" rel="noopener">Open secure checkout</a>
+              <span id="checkoutMessage">PRO Plan is coming soon.</span>
+              <a id="checkoutLink" class="button button-secondary checkout-link is-hidden" href="#" rel="noopener">PRO Plan is coming soon</a>
             </div>
           </article>
         </div>
@@ -1696,6 +1861,36 @@
     </div>
   </footer>
 
+  <div id="authModal" class="auth-modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle" aria-describedby="authSubtitle">
+    <div class="auth-panel" role="document">
+      <div class="auth-panel-header">
+        <div>
+          <h2 id="authTitle">Login</h2>
+          <p id="authSubtitle">Login before changing to the PRO Plan.</p>
+        </div>
+        <button id="authClose" class="button button-ghost auth-close" type="button">Close</button>
+      </div>
+      <form id="authForm" class="auth-form">
+        <label id="authNameField" class="auth-field is-hidden">
+          Name
+          <input id="authName" name="name" type="text" autocomplete="name" placeholder="Your name">
+        </label>
+        <label class="auth-field">
+          Email
+          <input id="authEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        </label>
+        <label class="auth-field">
+          Password
+          <input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required>
+        </label>
+        <button id="authSubmit" class="button button-primary" type="submit">Login</button>
+        <div id="authMessage" class="auth-message" aria-live="polite"></div>
+      </form>
+      <button id="authSwitch" class="button button-secondary auth-switch" type="button">Need an account? Register</button>
+      <p class="auth-demo-note">Static MVP demo: account data stays in this browser only. Use a demo password here, not your real password.</p>
+    </div>
+  </div>
+
   <div id="liveOrb" class="live-orb" aria-live="polite" aria-label="Current live color">
     <div class="live-orb-inner">
       <div>
@@ -1725,6 +1920,8 @@
       var STRIPE_PAYMENT_LINK = "";
       var CHECKOUT_SUCCESS_URL = "https://pixel2color.vercel.app/?checkout=success";
       var PRO_UNLOCK_KEY = STORAGE_PREFIX + ":unlimited-pick";
+      var AUTH_USERS_KEY = STORAGE_PREFIX + ":auth-users";
+      var AUTH_SESSION_KEY = STORAGE_PREFIX + ":auth-session";
       var defaultColor = {
         hex: "#7DD3FC",
         rgb: "rgb(125, 211, 252)",
@@ -1747,6 +1944,9 @@
         fingerprint: getFingerprint(),
         usage: getUsage(),
         isPro: getProStatus(),
+        authUser: getAuthSession(),
+        authMode: "login",
+        pendingPro: false,
         screenPicking: false
       };
 
@@ -1788,9 +1988,26 @@
       var checkoutTitle = document.getElementById("checkoutTitle");
       var checkoutMessage = document.getElementById("checkoutMessage");
       var checkoutLink = document.getElementById("checkoutLink");
+      var authActions = document.getElementById("authActions");
+      var accountChip = document.getElementById("accountChip");
+      var accountName = document.getElementById("accountName");
+      var logoutButton = document.getElementById("logoutButton");
+      var authModal = document.getElementById("authModal");
+      var authForm = document.getElementById("authForm");
+      var authTitle = document.getElementById("authTitle");
+      var authSubtitle = document.getElementById("authSubtitle");
+      var authNameField = document.getElementById("authNameField");
+      var authName = document.getElementById("authName");
+      var authEmail = document.getElementById("authEmail");
+      var authPassword = document.getElementById("authPassword");
+      var authSubmit = document.getElementById("authSubmit");
+      var authMessage = document.getElementById("authMessage");
+      var authSwitch = document.getElementById("authSwitch");
+      var authClose = document.getElementById("authClose");
 
       handleCheckoutReturn();
       setupCheckoutLink();
+      updateAuthUi();
       updateUsageUi();
       updateLiveReadout(defaultColor, 0, 0);
       loadDefaultSampleImage();
@@ -1915,6 +2132,39 @@
         button.addEventListener("click", function () {
           startCheckout();
         });
+      });
+
+      Array.prototype.forEach.call(document.querySelectorAll("[data-auth-open]"), function (button) {
+        button.addEventListener("click", function () {
+          openAuthModal(button.getAttribute("data-auth-open"));
+        });
+      });
+
+      authForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        submitAuthForm();
+      });
+
+      authSwitch.addEventListener("click", function () {
+        setAuthMode(state.authMode === "login" ? "register" : "login");
+      });
+
+      authClose.addEventListener("click", function () {
+        closeAuthModal();
+      });
+
+      authModal.addEventListener("click", function (event) {
+        if (event.target === authModal) closeAuthModal();
+      });
+
+      logoutButton.addEventListener("click", function () {
+        logoutUser();
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && !authModal.classList.contains("is-hidden")) {
+          closeAuthModal();
+        }
       });
 
       window.addEventListener("resize", function () {
@@ -2317,6 +2567,129 @@
         document.body.removeChild(textarea);
       }
 
+      /* ===== AUTH ===== */
+      function openAuthModal(mode, message) {
+        setAuthMode(mode || "login");
+        authSubtitle.textContent = message || (state.authMode === "register"
+          ? "Create a local demo account before changing to the PRO Plan."
+          : "Login before changing to the PRO Plan.");
+        authMessage.textContent = "";
+        authMessage.className = "auth-message";
+        authModal.classList.remove("is-hidden");
+        setTimeout(function () {
+          authEmail.focus({ preventScroll: true });
+        }, 0);
+      }
+
+      function closeAuthModal(options) {
+        authModal.classList.add("is-hidden");
+        authForm.reset();
+        authMessage.textContent = "";
+        authMessage.className = "auth-message";
+        if (!options || !options.keepPending) state.pendingPro = false;
+      }
+
+      function setAuthMode(mode) {
+        state.authMode = mode === "register" ? "register" : "login";
+        var isRegister = state.authMode === "register";
+        authTitle.textContent = isRegister ? "Register" : "Login";
+        authSubtitle.textContent = isRegister
+          ? "Create a local demo account before changing to the PRO Plan."
+          : "Login before changing to the PRO Plan.";
+        authNameField.classList.toggle("is-hidden", !isRegister);
+        authName.required = isRegister;
+        authPassword.autocomplete = isRegister ? "new-password" : "current-password";
+        authSubmit.textContent = isRegister ? "Create account" : "Login";
+        authSwitch.textContent = isRegister ? "Already have an account? Login" : "Need an account? Register";
+        authMessage.textContent = "";
+        authMessage.className = "auth-message";
+      }
+
+      function submitAuthForm() {
+        var email = authEmail.value.trim().toLowerCase();
+        var password = authPassword.value;
+        var name = authName.value.trim();
+
+        if (!email || !password || password.length < 6) {
+          showAuthMessage("Enter a valid email and a password with at least 6 characters.", "error");
+          return;
+        }
+
+        var users = getAuthUsers();
+        if (state.authMode === "register") {
+          if (users[email]) {
+            showAuthMessage("This email already has a demo account. Login instead.", "error");
+            return;
+          }
+
+          var createdUser = {
+            email: email,
+            name: name || email.split("@")[0],
+            password: password,
+            createdAt: new Date().toISOString()
+          };
+          users[email] = createdUser;
+          saveAuthUsers(users);
+          completeAuth(createdUser, "Account created. PRO Plan is coming soon.");
+          return;
+        }
+
+        if (!users[email]) {
+          showAuthMessage("No demo account found for this email. Register first.", "error");
+          return;
+        }
+
+        if (users[email].password !== password) {
+          showAuthMessage("Password does not match this demo account.", "error");
+          return;
+        }
+
+        completeAuth(users[email], "Logged in. PRO Plan is coming soon.");
+      }
+
+      function completeAuth(user, message) {
+        var pendingPro = state.pendingPro;
+        state.authUser = {
+          email: user.email,
+          name: user.name || user.email.split("@")[0]
+        };
+        saveAuthSession(state.authUser);
+        updateAuthUi();
+        closeAuthModal({ keepPending: true });
+        setStatus(message, "success");
+
+        if (pendingPro) {
+          state.pendingPro = false;
+          startCheckout();
+        }
+      }
+
+      function logoutUser() {
+        state.authUser = null;
+        state.pendingPro = false;
+        try {
+          localStorage.removeItem(AUTH_SESSION_KEY);
+        } catch (error) {
+          return;
+        }
+        updateAuthUi();
+        setStatus("Logged out. Login or register before changing to the PRO Plan.", "success");
+      }
+
+      function updateAuthUi() {
+        var isLoggedIn = Boolean(state.authUser && state.authUser.email);
+        authActions.classList.toggle("is-hidden", isLoggedIn);
+        accountChip.classList.toggle("is-hidden", !isLoggedIn);
+        if (isLoggedIn) {
+          accountName.textContent = state.authUser.name || state.authUser.email;
+        }
+      }
+
+      function showAuthMessage(message, type) {
+        authMessage.textContent = message;
+        authMessage.className = "auth-message" + (type ? " is-" + type : "");
+      }
+
       /* ===== CHECKOUT ===== */
       function handleCheckoutReturn() {
         var params = new URLSearchParams(window.location.search);
@@ -2338,7 +2711,7 @@
           checkoutUrl.searchParams.set("client_reference_id", state.fingerprint);
           checkoutLink.href = checkoutUrl.toString();
           checkoutLink.classList.remove("is-hidden");
-          checkoutTitle.textContent = "Secure checkout";
+          checkoutTitle.textContent = "PRO Plan is coming soon";
           checkoutMessage.textContent = "PRO Plan is coming soon.";
         }
       }
@@ -2346,6 +2719,16 @@
       function startCheckout() {
         document.getElementById("pricing").scrollIntoView({ behavior: "smooth", block: "start" });
         checkoutNote.classList.add("is-visible");
+
+        if (!state.authUser) {
+          state.pendingPro = true;
+          checkoutTitle.textContent = "Login required";
+          checkoutMessage.textContent = "Login or register before changing to the PRO Plan.";
+          checkoutLink.classList.add("is-hidden");
+          setStatus("Login or register before changing to the PRO Plan.", "error");
+          openAuthModal("login", "Login or register before changing to the PRO Plan.");
+          return;
+        }
 
         if (state.isPro) {
           checkoutTitle.textContent = "Unlimited Pick active";
@@ -2356,7 +2739,7 @@
         }
 
         checkoutTitle.textContent = "PRO Plan is coming soon";
-        checkoutMessage.textContent = "Unlimited picks and checkout will be available soon.";
+        checkoutMessage.textContent = "PRO Plan is coming soon.";
         checkoutLink.classList.add("is-hidden");
         setStatus("PRO Plan is coming soon.", "success");
       }
@@ -2375,7 +2758,7 @@
         updateUsageUi();
         checkoutNote.classList.add("is-visible");
         checkoutTitle.textContent = "Unlimited Pick active";
-        checkoutMessage.textContent = "Payment completed. Unlimited local picking is enabled on this browser.";
+        checkoutMessage.textContent = "Unlimited local picking is enabled on this browser.";
         checkoutLink.classList.add("is-hidden");
         setStatus("Unlimited Pick is active. Daily demo limits are removed.", "success");
       }
@@ -2411,6 +2794,46 @@
           return Boolean(parsed && parsed.active);
         } catch (error) {
           return false;
+        }
+      }
+
+      function getAuthUsers() {
+        try {
+          var parsed = JSON.parse(localStorage.getItem(AUTH_USERS_KEY) || "{}");
+          return parsed && typeof parsed === "object" ? parsed : {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function saveAuthUsers(users) {
+        try {
+          localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
+        } catch (error) {
+          showAuthMessage("This browser could not save the demo account.", "error");
+        }
+      }
+
+      function getAuthSession() {
+        try {
+          var parsed = JSON.parse(localStorage.getItem(AUTH_SESSION_KEY) || "null");
+          if (parsed && parsed.email) {
+            return {
+              email: parsed.email,
+              name: parsed.name || parsed.email.split("@")[0]
+            };
+          }
+        } catch (error) {
+          return null;
+        }
+        return null;
+      }
+
+      function saveAuthSession(user) {
+        try {
+          localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(user));
+        } catch (error) {
+          return;
         }
       }
 
