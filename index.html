@@ -69,7 +69,7 @@
         "name": "Is pixel2color free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The MVP includes 50 local demo picks per day. Unlimited Pick is $9.99 per month when connected to Stripe-hosted checkout."
+          "text": "The MVP includes 50 local demo picks per day. The PRO Plan is coming soon."
         }
       },
       {
@@ -1448,7 +1448,7 @@
                   <span class="font-mono" id="usageLimit">0/50</span>
                 </div>
                 <div class="meter" aria-hidden="true"><div id="meterFill" class="meter-fill"></div></div>
-                <div id="limitNote" class="limit-note">You have reached the local MVP demo limit. Unlimited Pick unlock is available through checkout.</div>
+                <div id="limitNote" class="limit-note">You have reached the local MVP demo limit. PRO Plan is coming soon.</div>
               </div>
 
               <div class="swatch-tray">
@@ -1608,7 +1608,7 @@
     <section id="pricing" class="section">
       <div class="site-shell">
         <h2>Pricing</h2>
-        <p class="section-intro">Start free and upgrade when you need unlimited picks. Checkout runs through a Stripe-hosted Payment Link so no payment secrets live in this static page.</p>
+        <p class="section-intro">Start free and upgrade when you need unlimited picks. PRO Plan is coming soon.</p>
         <div class="pricing-grid">
           <article class="pricing-card">
             <h3>Free</h3>
@@ -1630,8 +1630,8 @@
             </ul>
             <button class="button button-primary" type="button" data-go-pro>Unlimited Pick</button>
             <div id="checkoutNote" class="checkout-note" aria-live="polite">
-              <strong id="checkoutTitle">Secure checkout</strong>
-              <span id="checkoutMessage">Add your Stripe Payment Link to enable live checkout. This static app never stores Stripe secrets in the browser.</span>
+              <strong id="checkoutTitle">PRO Plan is coming soon</strong>
+              <span id="checkoutMessage">Unlimited picks and checkout will be available soon.</span>
               <a id="checkoutLink" class="button button-secondary checkout-link is-hidden" href="#" rel="noopener">Open secure checkout</a>
             </div>
           </article>
@@ -1662,11 +1662,11 @@
           </article>
           <article class="faq-item">
             <h3>Why do I see a 50-pick limit?</h3>
-            <p>The static MVP includes local demo metering so the product behavior is visible. Unlimited Pick removes the local daily counter after checkout return.</p>
+            <p>The static MVP includes local demo metering so the product behavior is visible. PRO Plan is coming soon.</p>
           </article>
           <article class="faq-item">
             <h3>What happens when Pro launches?</h3>
-            <p>Unlimited Pick is $9.99 per month. This static version uses a Stripe-hosted Payment Link; a backend version should verify subscription status with Stripe webhooks.</p>
+            <p>PRO Plan is coming soon, with unlimited picks and production checkout.</p>
           </article>
         </div>
       </div>
@@ -2068,7 +2068,7 @@
         normalizeUsageDay();
         if (!state.isPro && state.usage.count >= LIMIT) {
           limitNote.classList.add("is-visible");
-          setStatus("Daily demo limit reached. Unlimited Pick unlock is available through checkout.", "error");
+          setStatus("Daily demo limit reached. PRO Plan is coming soon.", "error");
           return false;
         }
 
@@ -2327,7 +2327,7 @@
         } else if (checkoutState === "cancel") {
           checkoutNote.classList.add("is-visible");
           checkoutTitle.textContent = "Checkout canceled";
-          checkoutMessage.textContent = "No payment was completed. You can restart Unlimited Pick checkout whenever you are ready.";
+          checkoutMessage.textContent = "PRO Plan is coming soon.";
           window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
         }
       }
@@ -2339,7 +2339,7 @@
           checkoutLink.href = checkoutUrl.toString();
           checkoutLink.classList.remove("is-hidden");
           checkoutTitle.textContent = "Secure checkout";
-          checkoutMessage.textContent = "Continue to Stripe-hosted checkout for Unlimited Pick. Configure the Payment Link after-payment redirect to " + CHECKOUT_SUCCESS_URL + " so successful checkout returns here and unlocks unlimited local picks.";
+          checkoutMessage.textContent = "PRO Plan is coming soon.";
         }
       }
 
@@ -2355,16 +2355,10 @@
           return;
         }
 
-        if (isPaymentLinkConfigured()) {
-          setStatus("Opening secure Stripe checkout for Unlimited Pick.", "success");
-          window.location.href = checkoutLink.href;
-          return;
-        }
-
-        checkoutTitle.textContent = "Connect Stripe Payment Link";
-        checkoutMessage.textContent = "Create a $9.99/month Stripe Payment Link, set its after-payment redirect to " + CHECKOUT_SUCCESS_URL + ", paste the link into STRIPE_PAYMENT_LINK in index.html, then redeploy. No Stripe secret keys belong in this static file.";
+        checkoutTitle.textContent = "PRO Plan is coming soon";
+        checkoutMessage.textContent = "Unlimited picks and checkout will be available soon.";
         checkoutLink.classList.add("is-hidden");
-        setStatus("Stripe Payment Link is not configured yet.", "error");
+        setStatus("PRO Plan is coming soon.", "success");
       }
 
       function isPaymentLinkConfigured() {
