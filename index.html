@@ -574,11 +574,12 @@
 
     #previewCanvas {
       display: block;
-      width: 100%;
+      width: auto;
+      max-width: 100%;
       max-height: 420px;
+      margin: 0 auto;
       background: #111827;
       cursor: crosshair;
-      object-fit: contain;
     }
 
     .sample-marker {
@@ -2264,11 +2265,12 @@
 
       function updateMarker() {
         if (!state.imageLoaded) return;
-        var rect = previewCanvas.getBoundingClientRect();
-        var displayX = (state.currentSourceX / Math.max(1, state.sourceWidth - 1)) * rect.width;
-        var displayY = (state.currentSourceY / Math.max(1, state.sourceHeight - 1)) * rect.height;
-        sampleMarker.style.left = displayX + "px";
-        sampleMarker.style.top = displayY + "px";
+        var canvasRect = previewCanvas.getBoundingClientRect();
+        var stageRect = canvasStage.getBoundingClientRect();
+        var displayX = (state.currentSourceX / Math.max(1, state.sourceWidth - 1)) * canvasRect.width;
+        var displayY = (state.currentSourceY / Math.max(1, state.sourceHeight - 1)) * canvasRect.height;
+        sampleMarker.style.left = (canvasRect.left - stageRect.left + displayX) + "px";
+        sampleMarker.style.top = (canvasRect.top - stageRect.top + displayY) + "px";
         sampleMarker.classList.add("is-visible");
       }
 
